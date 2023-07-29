@@ -4,18 +4,18 @@ with open('README.md', 'r') as f:
     long_description = f.read()
 
 setup(
-    name='pydantic-mermaid',
+    name='pydantic-2-mermaid',
     version='0.2.0',
-    description='Convert pydantic classes to markdown mermaid class charts',
+    description='Convert pydantic 2 classes to markdown mermaid class charts',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Eric Websmith',
     author_email='eric.websmith@gmail.com',
-    url='https://github.com/EricWebsmith/pydantic_mermaid',
-    packages=['pydantic_mermaid'],
-    package_data={'pydantic_mermaid': ['py.typed']},
+    url='https://github.com/EricWebsmith/pydantic_2_mermaid',
+    packages=['pydantic_2_mermaid'],
+    package_data={'pydantic_2_mermaid': ['py.typed']},
     install_requires=[
-        'pydantic'
+        'pydantic>=2.0.0'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
@@ -25,7 +25,7 @@ setup(
     python_requires='>=3.7',
     entry_points={
         'console_scripts': [
-            'pydantic-mermaid = pydantic_mermaid.__main__:main'
+            'pydantic-2-mermaid = pydantic_2_mermaid.__main__:main'
         ]
     }
 )

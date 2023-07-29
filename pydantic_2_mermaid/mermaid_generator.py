@@ -1,11 +1,15 @@
-from types import ModuleType
-from typing import Any, Dict, List, Set, Type
+from types import ModuleType, UnionType
+from typing import Any, Dict, List, Set, Type, get_args, get_origin, Union, Generic, Mapping
+from pydantic import BaseModel, RootModel
 
-from pydantic.fields import MAPPING_LIKE_SHAPES, ModelField, SHAPE_SINGLETON
-from pydantic.main import ModelMetaclass
-from pydantic.typing import get_args, get_origin, is_union, WithArgsTypes
+# from pydantic.types import MAPPING_LIKE_SHAPES
+# from pydantic.fields import MAPPING_LIKE_SHAPES, ModelField, SHAPE_SINGLETON
+# from pydantic.main import ModelMetaclass
+# from pydantic.typing import get_args, get_origin, is_union, WithArgsTypes
+from pydantic.fields import FieldInfo
+from pydantic._internal._model_construction import ModelMetaclass
 
-from pydantic_mermaid.models import MermaidClass, Property, Relations
+from pydantic_2_mermaid.models import MermaidClass, Property, Relations
 
 
 base_types = [str, int, float, bool]
@@ -21,41 +25,42 @@ constrained_types = {
     "ConstrainedDateValue",
 }
 
+def _get_name(v: Type[Any]) -> str:
+    """get name from type"""
+    if v in base_types:
+        return v.__name__
+    
+    origin = get_origin(v)
+    if origin is None:
+        return v.__name__
+
+    if origin is not None:
+        origin_name = origin.__name__
+        sub_names = []
+        for sub_type in get_args(v):
+            sub_names.append(_get_name(sub_type))
+        return f"{origin_name}[{', '.join(sub_names)}]"
+
+    if "__name__" in dir(v):
+        return v.__name__
+
+    return str(v)
 
 def _get_dependencies(v: Type[Any]) -> Set[str]:
     """get dependencies from property types"""
     ans: Set[str] = set()
+
     if v in base_types:
         return ans
 
-    if not isinstance(v, WithArgsTypes) and not isinstance(v, type):
-        return ans
+    origin = get_origin(v)
 
-    if is_union(get_origin(v)):
+    if origin is None:
+        ans.add(v.__name__)
+    
+    if origin is not None:
         for sub_v in get_args(v):
             ans |= _get_dependencies(sub_v)
-        return ans
-
-    if "__args__" in dir(v):
-        for sub_v in get_args(v):
-            ans |= _get_dependencies(sub_v)
-        return ans
-        # Generic alias are constructs like `list[int]`
-
-    return {v.__name__} - constrained_types
-
-
-def _get_field_dependencies(field: ModelField) -> Set[str]:
-    ans = set()
-    if field.shape == SHAPE_SINGLETON:
-        ans |= _get_dependencies(field.type_)
-    elif field.shape in MAPPING_LIKE_SHAPES:
-        ans |= _get_dependencies(field.key_field.type_)  # type: ignore
-        ans |= _get_dependencies(field.type_)
-
-    if field.sub_fields is not None:
-        for sub_field in field.sub_fields:  # type: ignore
-            ans |= _get_field_dependencies(sub_field)
 
     return ans
 
@@ -83,9 +88,11 @@ class MermaidGenerator:
                 continue
 
             properties: List[Property] = []
+
             if isinstance(class_type, ModelMetaclass):
+                model_type: Type[BaseModel] = class_type  # type: ignore
                 # inheritance
-                parents = class_type.mro()
+                parents = model_type.mro()
                 first_parent = parents[1]
                 parent_name = first_parent.__name__
                 self.child_parents[class_name] = {parent_name}
@@ -94,16 +101,28 @@ class MermaidGenerator:
                         self.parent_children[parent_name] = set()
                     self.parent_children[parent_name].add(class_name)
 
+                print(model_type)
+
                 # fields
-                fields: Dict[str, ModelField] = class_type.__fields__
+                fields: Dict[str, FieldInfo] = model_type.model_fields
                 self.service_clients[class_name] = set()
+                print("=================fields start==================")
                 for field_name, field in fields.items():
-                    properties.append(Property(name=field_name, type=field._type_display()))
+                    if field.annotation is None:
+                        continue
+                    
+                    field_type_name = _get_name(field.annotation)
+                    print(field_type_name)
+
+                    properties.append(Property(name=field_name, type=field_type_name))
                     # dependencies
-                    self.service_clients[class_name] = self.service_clients[class_name] | _get_field_dependencies(field)
+                    self.service_clients[class_name] = self.service_clients[class_name] | _get_dependencies(field.annotation)
+                print(self.service_clients)
                 self.service_clients[class_name] = self.service_clients[class_name] & class_set
                 class_set.add(class_name)
                 self.class_dict[class_name] = MermaidClass(name=class_name, properties=properties)
+            
+        # assert 0
 
     def generate_allow_list(self, root: str) -> None:
         """

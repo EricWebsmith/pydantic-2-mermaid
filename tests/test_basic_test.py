@@ -1,7 +1,7 @@
 import unittest
 from typing import Dict
 
-from pydantic_mermaid.mermaid_generator import _get_dependencies
+from pydantic_2_mermaid.mermaid_generator import _get_dependencies
 
 
 class TestBase(unittest.TestCase):

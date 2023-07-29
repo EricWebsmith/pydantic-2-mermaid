@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pydantic-2-mermaid"
+version = "0.1.0"
+description = ""
+authors = ["Eric Websmith <eric.websmith@gmail.com>"]
+readme = "README.md"
+packages = [{include = "pydantic_2_mermaid"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.0.3"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+flake8-import-order = "^0.18.2"
+flake8-print = "^5.0.0"
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
