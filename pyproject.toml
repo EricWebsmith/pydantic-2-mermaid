@@ -15,6 +15,7 @@ flake8 = "^6.0.0"
 flake8-import-order = "^0.18.2"
 flake8-print = "^5.0.0"
 pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
 
 [build-system]
 requires = ["poetry-core"]

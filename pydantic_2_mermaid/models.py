@@ -26,11 +26,7 @@ class MermaidClass(BaseModel):
     properties: List[Property]
 
     def __str__(self) -> str:
-        s = f"\n    class {self.name} {{\n"
-        for property in self.properties:
-            s += f"        {property.name}: {property.type}\n"
-        s += "    }\n"
-        return s
+        return self.generate_class(set())
 
     def generate_class(self, exclude: Set[str]) -> str:
         """

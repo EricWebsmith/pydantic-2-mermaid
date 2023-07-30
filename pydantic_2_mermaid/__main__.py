@@ -29,7 +29,7 @@ def import_module(path: str) -> ModuleType:
             return module
         else:
             return importlib.import_module(path)
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         logger.error("The --module argument must be a module path separated by dots or a valid filepath")
         raise e
 
@@ -44,10 +44,12 @@ def _parse_cli_args() -> argparse.Namespace:
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument(
+        "-m",
         "--module",
         help="name or filepath of the python module.\n" "Discoverable submodules will also be checked.",
     )
     parser.add_argument(
+        "-o",
         "--output",
         help="name of the file the mermaid chart should be written to.",
     )
@@ -68,5 +70,5 @@ def main():
         f.write(s)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

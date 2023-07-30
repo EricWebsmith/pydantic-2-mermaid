@@ -30,18 +30,12 @@ def _get_name(v: Type[Any]) -> str:
     origin = get_origin(v)
     if origin is None:
         return v.__name__
-
-    if origin is not None:
+    else:
         origin_name = origin.__name__
         sub_names = []
         for sub_type in get_args(v):
             sub_names.append(_get_name(sub_type))
         return f"{origin_name}[{', '.join(sub_names)}]"
-
-    if "__name__" in dir(v):
-        return v.__name__
-
-    return str(v)
 
 
 def _get_dependencies(v: Type[Any]) -> Set[str]:
@@ -103,7 +97,7 @@ class MermaidGenerator:
                 fields: Dict[str, FieldInfo] = model_type.model_fields
                 self.service_clients[class_name] = set()
                 for field_name, field in fields.items():
-                    if field.annotation is None:
+                    if field.annotation is None:  # pragma: no cover
                         continue
 
                     field_type_name = _get_name(field.annotation)
