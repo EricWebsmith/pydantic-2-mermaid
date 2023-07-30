@@ -1,6 +1,11 @@
-from pydantic_2_mermaid import MermaidGenerator, Relations
 from examples import country
+
+from src import MermaidGenerator, Relations
+
 
 def test_country():
     mg = MermaidGenerator(country)
-    mg.generate_chart(root="Country", relations=Relations.Dependency)
+    chart = mg.generate_chart(root="Country", relations=Relations.Dependency)
+    with open("./examples/country.md", mode="w") as f:
+        f.write(chart)
+        f.close()

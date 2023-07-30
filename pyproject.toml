@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Eric Websmith <eric.websmith@gmail.com>"]
 readme = "README.md"
-packages = [{include = "pydantic_2_mermaid"}]
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -20,3 +20,9 @@ pytest-cov = "^4.1.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report term-missing"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')"
+]

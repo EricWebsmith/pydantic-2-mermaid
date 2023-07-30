@@ -1,13 +1,15 @@
-from pydantic_2_mermaid.__main__ import main
 from pytest import MonkeyPatch
 
+from src import main
+
+
 def test_main(monkeypatch: MonkeyPatch):
-    monkeypatch.setattr('sys.argv', ['pydantic-2-mermaid', '-m', 'examples.animals', '-o', 'examples/animals.md'])
+    monkeypatch.setattr('sys.argv', ['pydantic-2-mermaid', '-m', 'examples.animals',
+                                     '-o', './examples/animals.tmp.md', '-e', 'inheritance'])
     main()
-    monkeypatch.undo()
 
 
 def test_main_path(monkeypatch: MonkeyPatch):
-    monkeypatch.setattr('sys.argv', ['pydantic-2-mermaid', '-m', './examples/animals.py', '-o', 'examples/animals.md'])
+    monkeypatch.setattr('sys.argv', ['pydantic-2-mermaid', '-m', './examples/animals.py',
+                                     '-o', './examples/animals.path.tmp.md', '-e', 'inheritance'])
     main()
-    monkeypatch.undo()

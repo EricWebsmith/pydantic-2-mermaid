@@ -7,7 +7,8 @@ from importlib.util import module_from_spec, spec_from_file_location
 from types import ModuleType
 from uuid import uuid4
 
-from pydantic_2_mermaid.mermaid_generator import MermaidGenerator
+from .mermaid_generator import MermaidGenerator
+from .models import Relations
 
 logger = logging.getLogger("pydantic-mermaid")
 
@@ -46,14 +47,26 @@ def _parse_cli_args() -> argparse.Namespace:
     parser.add_argument(
         "-m",
         "--module",
+        type=str,
         help="name or filepath of the python module.\n" "Discoverable submodules will also be checked.",
     )
     parser.add_argument(
         "-o",
         "--output",
+        type=str,
         help="name of the file the mermaid chart should be written to.",
     )
-    parser.add_argument("--root", help="Root class for dependency chart or inheritence chart", default="")
+    parser.add_argument(
+        "-n",
+        "--root",
+        type=str,
+        help="Root node for dependency chart or inheritance chart", default="")
+    parser.add_argument(
+        "-e",
+        "--relations",
+        nargs='+',
+        type=str,
+        help="Dependency or Inheritance chart", default="dependency")
     return parser.parse_args()
 
 
@@ -65,7 +78,15 @@ def main():
     module_type = import_module(args.module)
 
     mg = MermaidGenerator(module_type)
-    s = mg.generate_chart(root=args.root)
+    gt = Relations.Dependency
+    if "dependency" in args.relations and "inheritance" in args.relations:
+        gt = Relations.Dependency | Relations.Inheritance
+    elif "dependency" in args.relations:
+        gt = Relations.Dependency
+    elif "inheritance" in args.relations:
+        gt = Relations.Inheritance
+
+    s = mg.generate_chart(root=args.root, relations=gt)
     with open(args.output, "w") as f:
         f.write(s)
 

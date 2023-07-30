@@ -1,7 +1,7 @@
 from enum import auto, Flag
 from typing import List, Set
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 __all__ = ['Relations', 'MermaidClass', 'Property']
@@ -42,3 +42,13 @@ class MermaidClass(BaseModel):
             s += f"        {property.name}: {property.type}\n"
         s += "    }\n"
         return s
+
+
+class MermaidGraph(BaseModel):
+    """A graph of mermaid classes and their relationships"""
+
+    classes: dict[str, MermaidClass] = Field(default_factory=dict)
+    service_clients: dict[str, Set[str]] = Field(default_factory=dict)
+    client_services: dict[str, Set[str]] = Field(default_factory=dict)
+    parent_children: dict[str, Set[str]] = Field(default_factory=dict)
+    child_parents: dict[str, Set[str]] = Field(default_factory=dict)
