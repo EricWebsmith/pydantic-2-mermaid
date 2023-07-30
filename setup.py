@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='pydantic-2-mermaid',
-    version='0.2.0',
+    version='0.3.0',
     description='Convert pydantic 2 classes to markdown mermaid class charts',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -22,7 +22,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.10',
     entry_points={
         'console_scripts': [
             'pydantic-2-mermaid = pydantic_2_mermaid.__main__:main'

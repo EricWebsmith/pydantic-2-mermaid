@@ -8,7 +8,7 @@ classDiagram
     }
 
     class Beast {
-        lags: int
+        legs: int
     }
 
     class Bird {
@@ -29,8 +29,8 @@ classDiagram
 
 
     Animal <|-- Fish
-    Animal <|-- Beast
     Animal <|-- Bird
+    Animal <|-- Beast
     Beast <|-- Dog
     Beast <|-- Cat
     Fish <|-- Salmon

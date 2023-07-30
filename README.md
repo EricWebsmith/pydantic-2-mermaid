@@ -1,6 +1,8 @@
 # Pydantic 2 Mermaid
 To convert Pydantic 2 models to Mermaid charts, you can use the `pydantic-2-mermaid` library. This library allows you to generate Mermaid charts from your Pydantic models. Here are the steps to install and use pydantic-mermaid:
 
+If you are using pydantic 1, please visit [https://github.com/EricWebsmith/pydantic_mermaid](https://github.com/EricWebsmith/pydantic_mermaid)
+
 # Use in terminal
 
 Install the `pydantic-2-mermaid` library using pip:
