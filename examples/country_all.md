@@ -9,32 +9,32 @@ classDiagram
     }
 
     class Region {
-        counties: List[County]
+        counties: list[County]
     }
 
     class Province {
-        regions: List[Region]
+        regions: list[Region]
     }
 
     class City {
-        counties: List[County]
+        counties: list[County]
     }
 
     class Country {
-        provinces: List[Province]
-        cities: List[City]
+        provinces: list[Province]
+        cities: list[City]
     }
 
 
     Region ..> County
     Province ..> Region
     City ..> County
-    Country ..> Province
     Country ..> City
+    Country ..> Province
 
     Place <|-- City
     Place <|-- County
-    Place <|-- Country
-    Place <|-- Province
     Place <|-- Region
+    Place <|-- Province
+    Place <|-- Country
 ```

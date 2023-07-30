@@ -8,33 +8,32 @@ classDiagram
     class Region {
         name: str
         population: int
-        counties: List[County]
+        counties: list[County]
     }
 
     class Province {
         name: str
         population: int
-        regions: List[Region]
+        regions: list[Region]
     }
 
     class City {
         name: str
         population: int
-        counties: List[County]
+        counties: list[County]
     }
 
     class Country {
         name: str
         population: int
-        provinces: List[Province]
-        cities: List[City]
+        provinces: list[Province]
+        cities: list[City]
     }
 
-
-    Region ..> County
-    Province ..> Region
-    City ..> County
-    Country ..> Province
     Country ..> City
+    Country ..> Province
+    Province ..> Region
+    Region ..> County
+    City ..> County
 
 ```

@@ -4,6 +4,9 @@ from typing import List, Set
 from pydantic import BaseModel
 
 
+__all__ = ['Relations', 'MermaidClass', 'Property']
+
+
 class Relations(Flag):
     """Enum for representing the different types of relationships between classes."""
     Inheritance = auto()

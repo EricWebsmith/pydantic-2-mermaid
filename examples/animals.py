@@ -2,7 +2,7 @@ import sys
 
 from pydantic import BaseModel
 
-from pydantic_mermaid import MermaidGenerator, Relations
+from pydantic_2_mermaid import MermaidGenerator, Relations
 
 
 class Animal(BaseModel):
@@ -10,14 +10,14 @@ class Animal(BaseModel):
 
 
 class Fish(Animal):
-    gill = "gill"
+    gill: str = "gill"
 
     def swim(self):
         pass
 
 
 class Beast(Animal):
-    lags: int
+    legs: int
 
     def run(self):
         pass

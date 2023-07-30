@@ -1,11 +1,7 @@
-from types import ModuleType, UnionType
-from typing import Any, Dict, List, Set, Type, get_args, get_origin, Union, Generic, Mapping
-from pydantic import BaseModel, RootModel
+from types import ModuleType
+from typing import Any, Dict, List, Set, Type, get_args, get_origin
+from pydantic import BaseModel
 
-# from pydantic.types import MAPPING_LIKE_SHAPES
-# from pydantic.fields import MAPPING_LIKE_SHAPES, ModelField, SHAPE_SINGLETON
-# from pydantic.main import ModelMetaclass
-# from pydantic.typing import get_args, get_origin, is_union, WithArgsTypes
 from pydantic.fields import FieldInfo
 from pydantic._internal._model_construction import ModelMetaclass
 
@@ -25,11 +21,12 @@ constrained_types = {
     "ConstrainedDateValue",
 }
 
+
 def _get_name(v: Type[Any]) -> str:
     """get name from type"""
     if v in base_types:
         return v.__name__
-    
+
     origin = get_origin(v)
     if origin is None:
         return v.__name__
@@ -46,6 +43,7 @@ def _get_name(v: Type[Any]) -> str:
 
     return str(v)
 
+
 def _get_dependencies(v: Type[Any]) -> Set[str]:
     """get dependencies from property types"""
     ans: Set[str] = set()
@@ -57,7 +55,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     if origin is None:
         ans.add(v.__name__)
-    
+
     if origin is not None:
         for sub_v in get_args(v):
             ans |= _get_dependencies(sub_v)
@@ -101,28 +99,23 @@ class MermaidGenerator:
                         self.parent_children[parent_name] = set()
                     self.parent_children[parent_name].add(class_name)
 
-                print(model_type)
-
                 # fields
                 fields: Dict[str, FieldInfo] = model_type.model_fields
                 self.service_clients[class_name] = set()
-                print("=================fields start==================")
                 for field_name, field in fields.items():
                     if field.annotation is None:
                         continue
-                    
+
                     field_type_name = _get_name(field.annotation)
-                    print(field_type_name)
 
                     properties.append(Property(name=field_name, type=field_type_name))
                     # dependencies
-                    self.service_clients[class_name] = self.service_clients[class_name] | _get_dependencies(field.annotation)
-                print(self.service_clients)
+                    self.service_clients[class_name] = self.service_clients[class_name] | _get_dependencies(
+                        field.annotation)
+
                 self.service_clients[class_name] = self.service_clients[class_name] & class_set
                 class_set.add(class_name)
                 self.class_dict[class_name] = MermaidClass(name=class_name, properties=properties)
-            
-        # assert 0
 
     def generate_allow_list(self, root: str) -> None:
         """
@@ -162,7 +155,7 @@ class MermaidGenerator:
                 s += f"    {parent} <|-- {child}\n"
         return s
 
-    def generate_chart(self, root: str = "", relations: Relations = Relations.Dependency) -> str:
+    def generate_chart(self, *, root: str = "", relations: Relations = Relations.Dependency) -> str:
         """print class chart"""
         self.generate_allow_list(root)
 
