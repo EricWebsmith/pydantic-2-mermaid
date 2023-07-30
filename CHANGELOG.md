@@ -2,6 +2,12 @@
 
 This file documents all notable changes to this project.
 
+## [0.4.0] - 2023-07-30
+
+### Changed
+- Support inheritance in command line.
+- Exact pydantic parser.
+
 ## [0.3.0] - 2023-07-30
 
 ### Changed

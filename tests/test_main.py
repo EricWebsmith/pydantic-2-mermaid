@@ -1,6 +1,6 @@
 from pytest import MonkeyPatch
 
-from src import main
+from pydantic_mermaid import main
 
 
 def test_main(monkeypatch: MonkeyPatch):

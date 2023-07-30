@@ -1,10 +1,18 @@
 [tool.poetry]
 name = "pydantic-2-mermaid"
-version = "0.1.0"
+version = "0.4.0"
 description = ""
 authors = ["Eric Websmith <eric.websmith@gmail.com>"]
 readme = "README.md"
-packages = [{include = "src"}]
+packages = [{include = "pydantic_mermaid"}]
+homepage = "https://github.com/EricWebsmith/pydantic_2_mermaid"
+
+# Specify the classifiers
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -16,13 +24,17 @@ flake8-import-order = "^0.18.2"
 flake8-print = "^5.0.0"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
+mypy = "^1.4.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+pydantic-mermaid = 'pydantic_mermaid.__main__:main'
+
 [tool.pytest.ini_options]
-addopts = "--cov=src --cov-report term-missing"
+addopts = "--cov=pydantic_mermaid --cov-report term-missing"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')"
 ]

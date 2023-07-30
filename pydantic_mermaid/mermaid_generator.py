@@ -2,8 +2,8 @@ from types import ModuleType
 from typing import Set
 
 # we avoid pydantic_1_mermaid and pydantic_2_mermaid so that we can use both versions
-from .models import MermaidGraph, Relations
-from .pydantic_parser import PydanticParser
+from pydantic_mermaid.models import MermaidGraph, Relations
+from pydantic_mermaid.pydantic_parser import PydanticParser
 
 
 class MermaidGenerator:

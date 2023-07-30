@@ -7,8 +7,8 @@ from importlib.util import module_from_spec, spec_from_file_location
 from types import ModuleType
 from uuid import uuid4
 
-from .mermaid_generator import MermaidGenerator
-from .models import Relations
+from pydantic_mermaid.mermaid_generator import MermaidGenerator
+from pydantic_mermaid.models import Relations
 
 logger = logging.getLogger("pydantic-mermaid")
 

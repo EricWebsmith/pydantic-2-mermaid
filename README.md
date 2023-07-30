@@ -13,7 +13,7 @@ pip install pydantic-2-mermaid
 
 Use command line
 ```bash
-python -m pydantic-2-mermaid --module models.py --output models.md
+python -m pydantic-mermaid --module models.py --output models.md
 ```
 
 # Use in code
@@ -22,7 +22,7 @@ python -m pydantic-2-mermaid --module models.py --output models.md
 2. Create an instance of the MermaidGenerator class from the `pydantic-2-mermaid` module and pass in your Pydantic models as arguments.
 
 ```python
-from pydantic_2_mermaid import MermaidGenerator
+from pydantic_mermaid import MermaidGenerator
 
 import my_module
 

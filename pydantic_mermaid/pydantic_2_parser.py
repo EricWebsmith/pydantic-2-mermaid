@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from pydantic._internal._model_construction import ModelMetaclass
 from pydantic.fields import FieldInfo
 
-from .models import MermaidClass, MermaidGraph, Property
+from pydantic_mermaid.models import MermaidClass, MermaidGraph, Property
 
 
 base_types = [str, int, float, bool]

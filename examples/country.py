@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from src import MermaidGenerator, Relations
+from pydantic_mermaid import MermaidGenerator, Relations
 
 
 class Place(BaseModel):

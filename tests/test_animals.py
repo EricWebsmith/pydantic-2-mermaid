@@ -1,6 +1,6 @@
 from examples import animals
 
-from src import MermaidGenerator, Relations
+from pydantic_mermaid import MermaidGenerator, Relations
 
 
 def test_animals():
