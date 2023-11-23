@@ -1,5 +1,4 @@
 from examples import country
-
 from pydantic_mermaid import MermaidGenerator, Relations
 
 

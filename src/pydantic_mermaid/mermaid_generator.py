@@ -1,7 +1,6 @@
 from types import ModuleType
 from typing import Set
 
-# we avoid pydantic_1_mermaid and pydantic_2_mermaid so that we can use both versions
 from pydantic_mermaid.models import MermaidGraph, Relations
 from pydantic_mermaid.pydantic_parser import PydanticParser
 
@@ -30,7 +29,6 @@ class MermaidGenerator:
             parents = list(self.g.parent_children.keys())
             parents.reverse()
             for parent in parents:
-                print("parent", parent)
                 if parent in self.allow_set:
                     self.allow_set = self.allow_set | self.g.parent_children[parent]
 

@@ -46,7 +46,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
     return ans
 
 
-class Pydantic2Parser:
+class PydanticParser:
     """parse pydantic module to mermaid graph"""
 
     def __call__(self, module: ModuleType) -> MermaidGraph:

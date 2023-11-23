@@ -1,5 +1,4 @@
 from examples import animals
-
 from pydantic_mermaid import MermaidGenerator, Relations
 
 

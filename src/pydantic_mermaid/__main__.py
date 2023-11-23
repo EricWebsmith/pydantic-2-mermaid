@@ -78,17 +78,17 @@ def main():
     module_type = import_module(args.module)
 
     mg = MermaidGenerator(module_type)
-    gt = Relations.Dependency
+    relations = Relations.Dependency
     if "dependency" in args.relations and "inheritance" in args.relations:
-        gt = Relations.Dependency | Relations.Inheritance
+        relations = Relations.Dependency | Relations.Inheritance
     elif "dependency" in args.relations:
-        gt = Relations.Dependency
+        relations = Relations.Dependency
     elif "inheritance" in args.relations:
-        gt = Relations.Inheritance
+        relations = Relations.Inheritance
 
-    s = mg.generate_chart(root=args.root, relations=gt)
+    chart_content = mg.generate_chart(root=args.root, relations=relations)
     with open(args.output, "w") as f:
-        f.write(s)
+        f.write(chart_content)
 
 
 if __name__ == "__main__":  # pragma: no cover
