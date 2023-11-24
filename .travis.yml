@@ -1,12 +1,10 @@
 language: python
-python:
-  - "3.6"
-  - "3.7"
-  - "3.8"
-  - "3.9"
-# command to install dependencies
-install:
-  - pip install -r requirements.txt
-# command to run tests
+services:
+  - docker
+
+before_install:
+  - docker pull python:3.10
+  - docker run -v $PWD:/app -w /app python:3.10 sh -c "pip install poetry && poetry install"
+
 script:
-  - pytest
+  - docker run -v $PWD:/app -w /app python:3.10 sh -c "poetry run pytest"
