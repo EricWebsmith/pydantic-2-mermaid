@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydantic-2-mermaid"
-version = "0.4.0"
+version = "0.5.0"
 description = "Convert pydantic classes to markdown mermaid class charts"
 authors = ["Eric Websmith <eric.websmith@gmail.com>"]
 readme = "README.md"

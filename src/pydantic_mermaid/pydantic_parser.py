@@ -81,7 +81,9 @@ class PydanticParser:
 
                 properties.append(Property(name=field_name, type=field_type_name))
                 # dependencies
-                graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(field.annotation)
+                graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
+                    field.annotation
+                )
 
             graph.service_clients[class_name] = graph.service_clients[class_name]
             graph.classes[class_name] = MermaidClass(name=class_name, properties=properties)
