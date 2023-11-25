@@ -28,9 +28,9 @@ classDiagram
     }
 
 
-    Animal <|-- Beast
     Animal <|-- Bird
     Animal <|-- Fish
+    Animal <|-- Beast
     Beast <|-- Cat
     Beast <|-- Dog
     Fish <|-- Salmon
