@@ -15,7 +15,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8.1"
 pydantic = "^2.0.3"
 
 [tool.poetry.group.dev.dependencies]
@@ -38,3 +38,7 @@ addopts = "--cov=pydantic_mermaid --cov-report term-missing"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')"
 ]
+
+[tool.black]
+line-length = 119
+target-version = ['py38']

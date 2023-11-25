@@ -60,13 +60,17 @@ def _parse_cli_args() -> argparse.Namespace:
         "-n",
         "--root",
         type=str,
-        help="Root node for dependency chart or inheritance chart", default="")
+        help="Root node for dependency chart or inheritance chart",
+        default="",
+    )
     parser.add_argument(
         "-e",
         "--relations",
-        nargs='+',
+        nargs="+",
         type=str,
-        help="Dependency or Inheritance chart", default="dependency")
+        help="Dependency or Inheritance chart",
+        default="dependency",
+    )
     return parser.parse_args()
 
 
