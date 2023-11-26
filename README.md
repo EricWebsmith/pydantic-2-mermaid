@@ -1,7 +1,7 @@
 # Pydantic 2 Mermaid
 
-[![versions](https://img.shields.io/pypi/pyversions/pydantic-2-mermaid.svg)](https://github.com/eric.websmith/pydantic-2-mermaid)
-[![license](https://img.shields.io/github/license/eric.websmith/pydantic-2-mermaid.svg)](https://github.com/eric.websmith/pydantic-2-mermaid/blob/main/LICENSE)
+[![versions](https://img.shields.io/pypi/pyversions/pydantic-2-mermaid.svg)](https://github.com/ericwebsmith/pydantic-2-mermaid)
+[![license](https://img.shields.io/github/license/ericwebsmith/pydantic-2-mermaid.svg)](https://github.com/ericwebsmith/pydantic-2-mermaid/blob/main/LICENSE)
 
 To convert Pydantic 2 models to Mermaid charts, you can use the `pydantic-2-mermaid` library. This library allows you to generate Mermaid charts from your Pydantic models. Here are the steps to install and use pydantic-mermaid:
 
