@@ -24,7 +24,11 @@ def _get_name(v: Type[Any]) -> str:
     if origin is None:
         return v.__name__
     else:
-        origin_name = origin.__name__
+        # In python 3.8 Union has _name attribute
+        if hasattr(origin, "_name"):
+            origin_name = origin._name
+        elif hasattr(origin, "__name__"):
+            origin_name = origin.__name__
         sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
         return f"{origin_name}[{', '.join(sub_names)}]"
 
