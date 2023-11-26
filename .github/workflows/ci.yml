@@ -29,9 +29,14 @@ jobs:
         poetry install
     - name: Test with pytest
       run: |
-        poetry run pytest --cov=./
+        poetry run pytest
+    - name: Generate coverage XML report
+      run: |
+        poetry run coverage xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
+      with:
+        file: ./coverage.xml
     - name: Lint with flake8
       run: |
         poetry run flake8
