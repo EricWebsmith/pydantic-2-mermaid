@@ -2,7 +2,7 @@
 
 This file documents all notable changes to this project.
 
-## [0.5.1] - 2023-11-26
+## [0.5.2] - 2023-11-26
 
 ### Changed
 - Downgrade requirement from python 3.8.1 to python 3.8
