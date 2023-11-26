@@ -1,4 +1,7 @@
 # Pydantic 2 Mermaid
+
+[![versions](https://img.shields.io/pypi/pyversions/pydantic-2-mermaid.svg)](https://github.com/eric.websmith/pydantic-2-mermaid)
+
 To convert Pydantic 2 models to Mermaid charts, you can use the `pydantic-2-mermaid` library. This library allows you to generate Mermaid charts from your Pydantic models. Here are the steps to install and use pydantic-mermaid:
 
 If you are using pydantic 1, please visit [https://github.com/EricWebsmith/pydantic_mermaid](https://github.com/EricWebsmith/pydantic_mermaid)
@@ -13,7 +16,12 @@ pip install pydantic-2-mermaid
 
 Use command line
 ```bash
-python -m pydantic-mermaid --module models.py --output models.md
+pydantic-mermaid --module models.py --output models.md
+```
+
+You can run the following comamand get help for the command.
+```bash
+pydantic-mermaid --help
 ```
 
 # Use in code

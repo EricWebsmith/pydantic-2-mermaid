@@ -9,7 +9,7 @@ def normalize_chart(chart: List[str]) -> List[str]:
     return chart
 
 
-def compare_charts(actual, expected):
+def compare_charts(actual: List[str], expected: List[str]):
     actual = normalize_chart(actual)
     expected = normalize_chart(expected)
     assert actual == expected

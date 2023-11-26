@@ -1,7 +1,11 @@
+"""Parse pydantic 2.10 module to mermaid graph"""
 from types import ModuleType
 from typing import Any, Dict, get_args, get_origin, List, Set, Type
 
 from pydantic import BaseModel
+# ModelMetaclass is commonly used pydantic related packages, so we need to import it here
+# We use this to determine if a class is a pydantic model
+# I am strongly against making it _internal
 from pydantic._internal._model_construction import ModelMetaclass
 from pydantic.fields import FieldInfo
 
