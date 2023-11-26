@@ -6,7 +6,6 @@ from tests.utils import compare_charts
 def test_marriage():
     mg = MermaidGenerator(marriage)
     chart = mg.generate_chart(relations=Relations.Dependency)
-    print(chart)
     actual = chart.split("\n")
 
     expected = []

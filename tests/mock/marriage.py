@@ -3,6 +3,7 @@ import sys
 from typing import Dict
 
 from pydantic import BaseModel
+
 from pydantic_mermaid.mermaid_generator import MermaidGenerator
 
 
