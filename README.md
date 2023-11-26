@@ -1,5 +1,9 @@
 # Pydantic 2 Mermaid
 
+[![CI](https://github.com/ericwebsmith/pydantic-2-mermaid/workflows/CI/badge.svg)](https://github.com/EricWebsmith/pydantic-2-mermaid/actions/workflows/ci.yml)
+![Coverage](https://codecov.io/gh/ericwebsmith/pydantic-2-mermaid/branch/main/graph/badge.svg)
+[![pypi](https://img.shields.io/pypi/v/pydantic-2-mermaid.svg)](https://pypi.python.org/pypi/pydantic-2-mermaid)
+[![downloads](https://static.pepy.tech/badge/pydantic-2-mermaid/month)](https://pepy.tech/project/pydantic-2-mermaid)
 [![versions](https://img.shields.io/pypi/pyversions/pydantic-2-mermaid.svg)](https://github.com/ericwebsmith/pydantic-2-mermaid)
 [![license](https://img.shields.io/github/license/ericwebsmith/pydantic-2-mermaid.svg)](https://github.com/ericwebsmith/pydantic-2-mermaid/blob/main/LICENSE)
 
