@@ -1,5 +1,6 @@
 """This example is to test dict keys"""
 import sys
+from pathlib import Path
 from typing import Dict
 
 from pydantic import BaseModel
@@ -30,6 +31,6 @@ if __name__ == "__main__":
     mg = MermaidGenerator(current_module)
 
     chart_dependency = mg.generate_chart()
-    with open("tests/mock/marriage.md", mode="w") as f:
+    with Path("tests/mock/marriage.md").open(mode="w") as f:
         f.write(chart_dependency)
         f.close()

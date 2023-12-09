@@ -1,8 +1,7 @@
-from enum import auto, Flag
+from enum import Flag, auto
 from typing import Dict, List, Set
 
 from pydantic import BaseModel, Field
-
 
 __all__ = ["Relations", "MermaidClass", "Property"]
 

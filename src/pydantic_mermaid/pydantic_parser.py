@@ -1,8 +1,9 @@
 """Parse pydantic 2.10 module to mermaid graph"""
 from types import ModuleType
-from typing import Any, Dict, get_args, get_origin, List, Set, Type
+from typing import Any, Dict, List, Set, Type, get_args, get_origin
 
 from pydantic import BaseModel
+
 # ModelMetaclass is commonly used pydantic related packages, so we need to import it here
 # We use this to determine if a class is a pydantic model
 # I am strongly against making it _internal
@@ -10,7 +11,6 @@ from pydantic._internal._model_construction import ModelMetaclass
 from pydantic.fields import FieldInfo
 
 from pydantic_mermaid.models import MermaidClass, MermaidGraph, Property
-
 
 base_types = [str, int, float, bool]
 
@@ -23,14 +23,14 @@ def _get_name(v: Type[Any]) -> str:
     origin = get_origin(v)
     if origin is None:
         return v.__name__
-    else:
-        # In python 3.8 Union has _name attribute
-        if hasattr(origin, "_name"):
-            origin_name = origin._name
-        elif hasattr(origin, "__name__"):
-            origin_name = origin.__name__
-        sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
-        return f"{origin_name}[{', '.join(sub_names)}]"
+
+    # In python 3.8 Union has _name attribute
+    if hasattr(origin, "_name"):
+        origin_name = origin._name
+    elif hasattr(origin, "__name__"):
+        origin_name = origin.__name__
+    sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
+    return f"{origin_name}[{', '.join(sub_names)}]"
 
 
 def _get_dependencies(v: Type[Any]) -> Set[str]:
