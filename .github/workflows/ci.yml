@@ -39,9 +39,9 @@ jobs:
         file: ./coverage.xml
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-    - name: Lint with flake8
+    - name: Lint with ruff
       run: |
-        poetry run flake8
+        poetry run ruff check .
     - name: Lint with mypy
       run: |
         poetry run mypy src
