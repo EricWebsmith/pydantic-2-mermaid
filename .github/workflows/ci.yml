@@ -44,4 +44,4 @@ jobs:
         poetry run ruff check .
     - name: Lint with mypy
       run: |
-        poetry run mypy src
+        poetry run mypy .
