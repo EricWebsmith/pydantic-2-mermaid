@@ -9,7 +9,7 @@ class Relations(Flag):
 
     Inheritance = auto()
     Dependency = auto()
-    Both = Inheritance | Dependency
+    Both = 3
 
     def __str__(self) -> str:
         if isinstance(self.name, str):

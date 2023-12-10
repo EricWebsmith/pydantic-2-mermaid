@@ -61,7 +61,7 @@ def test_main_usa_dependency(monkeypatch, tmp_path):
     compare_markdowns(file, "examples/usa_dependency.md")
 
 
-def test_main_both_inheritance_dependency(monkeypatch, tmp_path):
+def test_main_both(monkeypatch, tmp_path):
     file = tmp_path / "animals.md"
     monkeypatch.setattr(
         "sys.argv",
