@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Set, Type, get_args, get_origin
 
 from pydantic import BaseModel
 
-# ModelMetaclass is commonly used pydantic related packages, so we need to import it here
+# ModelMetaclass is commonly used pydantic related packages, and we need to import it here
 # We use this to determine if a class is a pydantic model
 # I am strongly against making it _internal
 from pydantic._internal._model_construction import ModelMetaclass
@@ -73,7 +73,7 @@ class PydanticParser:
             first_parent = parents[1]
             parent_name = first_parent.__name__
             graph.child_parents[class_name] = {parent_name}
-            if parent_name in graph.classes:
+            if parent_name in graph.class_dict:
                 if parent_name not in graph.parent_children:
                     graph.parent_children[parent_name] = set()
                 graph.parent_children[parent_name].add(class_name)
@@ -94,6 +94,7 @@ class PydanticParser:
                 )
 
             graph.service_clients[class_name] = graph.service_clients[class_name]
-            graph.classes[class_name] = MermaidClass(name=class_name, properties=properties)
+            graph.class_dict[class_name] = MermaidClass(name=class_name, properties=properties)
+            graph.class_names.append(class_name)
 
         return graph
