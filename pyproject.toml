@@ -22,7 +22,7 @@ pydantic = "^2.0.3"
 mypy = "^1.7.1"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
-ruff = "^0.1.7"
+ruff = "^0.1.8"
 
 [build-system]
 requires = ["poetry-core"]
@@ -35,6 +35,9 @@ pydantic-mermaid = 'pydantic_mermaid.__main__:main'
 addopts = "--cov=pydantic_mermaid --cov-report term-missing"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')"
+]
+testpaths = [
+    "tests",
 ]
 
 [tool.ruff]
