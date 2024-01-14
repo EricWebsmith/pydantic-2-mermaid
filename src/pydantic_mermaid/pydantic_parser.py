@@ -20,6 +20,12 @@ def _get_name(v: Type[Any]) -> str:
     if v in base_types:
         return v.__name__
 
+    # Support literal inner parts, like Literal[True, False]
+    if type(v) in base_types:
+        if isinstance(v, str):
+            return f"'{v}'"
+        return str(v)
+
     origin = get_origin(v)
     if origin is None:
         return v.__name__
@@ -42,7 +48,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None:
+    if origin is None and hasattr(v, "__name__"):
         ans.add(v.__name__)
 
     if origin is not None:
