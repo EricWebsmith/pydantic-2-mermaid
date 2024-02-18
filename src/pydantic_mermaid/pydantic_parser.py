@@ -42,7 +42,7 @@ def _get_name(v: Type[Any]) -> str:
     return f"{origin_name}[{', '.join(sub_names)}]"
 
 
-def _get_dependencies(v: Type[Any]) -> Set[str]:
+def _get_dependencies(v: Type[Any], ignore_types: list[Type] = ()) -> Set[str]:
     """get dependencies from property types"""
     ans: Set[str] = set()
 
@@ -51,12 +51,12 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None and hasattr(v, "__name__") and v != NoneType:
+    if origin is None and hasattr(v, "__name__") and v != NoneType and v not in ignore_types:
         ans.add(v.__name__)
 
     if origin is not None:
         for sub_v in get_args(v):
-            ans |= _get_dependencies(sub_v)
+            ans |= _get_dependencies(sub_v, ignore_types)
 
     return ans
 
@@ -64,7 +64,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 class PydanticParser:
     """parse pydantic module to mermaid graph"""
 
-    def __call__(self, module: ModuleType) -> MermaidGraph:
+    def __call__(self, module: ModuleType, ignore_types: list[Type] = ()) -> MermaidGraph:
         graph = MermaidGraph()
 
         for class_name, class_type in module.__dict__.items():
@@ -99,7 +99,7 @@ class PydanticParser:
                 properties.append(Property(name=field_name, type=field_type_name))
                 # dependencies
                 graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
-                    field.annotation
+                    field.annotation, ignore_types
                 )
 
             graph.service_clients[class_name] = graph.service_clients[class_name]
