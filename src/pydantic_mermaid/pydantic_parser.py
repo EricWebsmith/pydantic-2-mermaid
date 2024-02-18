@@ -1,9 +1,8 @@
 """Parse pydantic 2.10 module to mermaid graph"""
-from types import ModuleType
+from types import ModuleType, NoneType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
 
 from pydantic import BaseModel
-
 # ModelMetaclass is commonly used pydantic related packages, and we need to import it here
 # We use this to determine if a class is a pydantic model
 # I am strongly against making it _internal
@@ -36,6 +35,10 @@ def _get_name(v: Type[Any]) -> str:
     elif hasattr(origin, "__name__"):
         origin_name = origin.__name__
     sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
+
+    if hasattr(v,"_name") and getattr(v,"_name") == "Optional" and len(sub_names) == 2 and sub_names[-1] == "NoneType":
+        return f"Optional[{sub_names[0]}]"
+
     return f"{origin_name}[{', '.join(sub_names)}]"
 
 
@@ -48,7 +51,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None and hasattr(v, "__name__"):
+    if origin is None and hasattr(v, "__name__") and v != NoneType:
         ans.add(v.__name__)
 
     if origin is not None:
