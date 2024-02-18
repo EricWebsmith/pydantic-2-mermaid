@@ -1,5 +1,5 @@
 from types import ModuleType
-from typing import Set, Type
+from typing import Set, Type, Dict
 
 from pydantic_mermaid.models import MermaidGraph, Relations
 from pydantic_mermaid.pydantic_parser import PydanticParser
@@ -8,7 +8,7 @@ from pydantic_mermaid.pydantic_parser import PydanticParser
 class MermaidGenerator:
     """genertate a class chart from module"""
 
-    def __init__(self, module: ModuleType, *, ignore_type_dependencies: list[Type] = ()) -> None:
+    def __init__(self, module: ModuleType, *, ignore_type_dependencies: list[Type] = (dict, list, set)) -> None:
         self.g: MermaidGraph = PydanticParser()(module, ignore_type_dependencies)
         self.allow_set: Set[str] = set()
 
