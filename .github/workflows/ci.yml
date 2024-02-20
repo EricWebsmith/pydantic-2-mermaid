@@ -45,5 +45,5 @@ jobs:
         poetry run ruff format --check
     - name: Lint with mypy
       run: |
-        poetry run mypy .
+        poetry run mypy . --strict
         
