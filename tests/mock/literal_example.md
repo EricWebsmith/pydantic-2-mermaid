@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+
     class Pie {
         flavor: Literal['apple', 'pumpkin']
         good: Literal[True, False, 'Unknown']
@@ -7,14 +8,15 @@ classDiagram
     }
 
     class ApplePie {
-        flavor: Literal['apple']
+        flavor: Literal['apple'] = 'apple'
     }
 
     class PumpkinPie {
-        flavor: Literal['pumpkin']
+        flavor: Literal['pumpkin'] = 'pumpkin'
     }
 
 
-    Pie <|-- ApplePie
     Pie <|-- PumpkinPie
+    Pie <|-- ApplePie
+
 ```

@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+
     class Municipality {
         name: str
         population: int

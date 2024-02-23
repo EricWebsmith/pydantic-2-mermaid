@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+
     class Flavor {
         <<Enumeration>>
         apple: str = 'apple'
@@ -12,12 +13,15 @@ classDiagram
     }
 
     class ApplePie {
+        flavor: Flavor = 'Flavor.apple'
     }
 
     class PumpkinPie {
+        flavor: Flavor = 'Flavor.pumpkin'
     }
 
 
-    Pie <|-- ApplePie
     Pie <|-- PumpkinPie
+    Pie <|-- ApplePie
+
 ```

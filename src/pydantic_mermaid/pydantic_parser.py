@@ -95,7 +95,11 @@ class PydanticParser:
 
                     field_type_name = _get_name(field.annotation)
 
-                    properties.append(Property(name=name, type=field_type_name))
+                    default_value = ""
+                    if not field.is_required():
+                        default_value = f"'{field.default}'" if isinstance(field.default, str) else str(field.default)
+
+                    properties.append(Property(name=name, type=field_type_name, default_value=default_value))
                     # dependencies
                     graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
                         field.annotation

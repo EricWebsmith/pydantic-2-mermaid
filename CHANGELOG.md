@@ -2,9 +2,12 @@
 
 This file documents all notable changes to this project.
 
-## [x.x.x] - TBD
+## [0.7.0] - TBD
 ### Changed
-- use strict mypy
+- Support Enums
+- Add default values
+- Use jinja2 templates
+- Use strict mypy
 
 ## [0.6.0] - 2024-01-14
 
