@@ -4,9 +4,9 @@ from pydantic import BaseModel
 
 
 class Flavor(str, Enum):
-    apple = "apple"
-    pumpkin = "pumpkin"
-    potato = "potato"
+    APPLE = "apple"
+    PUMPKIN = "pumpkin"
+    POTATO = "potato"
 
 
 class Pie(BaseModel):
@@ -14,8 +14,8 @@ class Pie(BaseModel):
 
 
 class ApplePie(Pie):
-    flavor: Flavor = Flavor.apple
+    flavor: Flavor = Flavor.APPLE
 
 
 class PumpkinPie(Pie):
-    flavor: Flavor = Flavor.pumpkin
+    flavor: Flavor = Flavor.PUMPKIN

@@ -59,6 +59,17 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
     return ans
 
 
+def get_default_value(field: FieldInfo) -> str:
+    default_value = ""
+    if not field.is_required():
+        if isinstance(field.default, str) and not isinstance(field.annotation, EnumMeta):
+            default_value = f"'{field.default}'"
+        else:
+            default_value = str(field.default)
+
+    return default_value
+
+
 class PydanticParser:
     """parse pydantic module to mermaid graph"""
 
@@ -93,13 +104,9 @@ class PydanticParser:
                     if field.annotation is None:  # pragma: no cover
                         continue
 
-                    field_type_name = _get_name(field.annotation)
-
-                    default_value = ""
-                    if not field.is_required():
-                        default_value = f"'{field.default}'" if isinstance(field.default, str) else str(field.default)
-
-                    properties.append(Property(name=name, type=field_type_name, default_value=default_value))
+                    properties.append(
+                        Property(name=name, type=_get_name(field.annotation), default_value=get_default_value(field))
+                    )
                     # dependencies
                     graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
                         field.annotation

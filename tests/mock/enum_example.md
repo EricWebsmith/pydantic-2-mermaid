@@ -3,9 +3,9 @@ classDiagram
 
     class Flavor {
         <<Enumeration>>
-        apple: str = 'apple'
-        pumpkin: str = 'pumpkin'
-        potato: str = 'potato'
+        APPLE: str = 'apple'
+        PUMPKIN: str = 'pumpkin'
+        POTATO: str = 'potato'
     }
 
     class Pie {
@@ -13,15 +13,15 @@ classDiagram
     }
 
     class ApplePie {
-        flavor: Flavor = 'Flavor.apple'
+        flavor: Flavor = Flavor.APPLE
     }
 
     class PumpkinPie {
-        flavor: Flavor = 'Flavor.pumpkin'
+        flavor: Flavor = Flavor.PUMPKIN
     }
 
 
-    Pie <|-- PumpkinPie
     Pie <|-- ApplePie
+    Pie <|-- PumpkinPie
 
 ```
