@@ -29,6 +29,9 @@ def _get_name(v: Type[Any]) -> str:
 
     origin = get_origin(v)
     if origin is None:
+        if v == Ellipsis:  # type: ignore
+            return "..."
+
         return v.__name__
 
     # In python 3.8 Union has _name attribute
