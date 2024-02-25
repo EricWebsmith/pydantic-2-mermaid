@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+
     class Male {
         name: str
         age: int
@@ -17,7 +18,6 @@ classDiagram
     class WivesRegistry {
         wife_dict: dict[Male, Female]
     }
-
 
     HusbandsRegistry ..> Male
     HusbandsRegistry ..> Female

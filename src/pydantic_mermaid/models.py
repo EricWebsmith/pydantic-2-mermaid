@@ -12,10 +12,7 @@ class Relations(Flag):
     Both = Inheritance | Dependency
 
     def __str__(self) -> str:
-        if isinstance(self.name, str):
-            return self.name.lower()
-
-        return ""  # pragma: no cover
+        return self.name.lower()  # type: ignore
 
     def __repr__(self) -> str:  # pragma: no cover
         return str(self)
@@ -32,6 +29,14 @@ class Property(BaseModel):
 
     name: str
     type: str
+    default_value: str = ""
+
+    def __str__(self) -> str:
+        s = f"{self.name}: {self.type}"
+        if self.default_value:
+            s = s + f" = {self.default_value}"
+
+        return s
 
 
 class MermaidClass(BaseModel):
@@ -39,27 +44,7 @@ class MermaidClass(BaseModel):
 
     name: str
     properties: List[Property]
-
-    def __str__(self) -> str:
-        return self.generate_class(set())
-
-    def generate_class(self, exclude: Set[str]) -> str:
-        """
-        Generate mermaid class definition with some properties omitted.
-        This is used when there is a parent class and we want to omit inherited properties.
-
-        :param exclude: A set of '{property.name}: {property.type}' to be excluded from the generated class definition.
-        """
-        # flake8 of python3.12 treats class as a keyword and gives the following error:
-        # ./src/pydantic_mermaid/models.py:40:17: E272 multiple spaces before keyword
-        s = f"\n{'    '}class {self.name} {{\n"
-        for property in self.properties:
-            property_with_type = f"{property.name}: {property.type}"
-            if property_with_type in exclude:
-                continue
-            s += f"        {property_with_type}\n"
-        s += "    }\n"
-        return s
+    annotation: str = ""
 
 
 class MermaidGraph(BaseModel):

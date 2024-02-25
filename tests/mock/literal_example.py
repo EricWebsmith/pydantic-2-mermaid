@@ -11,8 +11,8 @@ class Pie(BaseModel):
 
 
 class ApplePie(Pie):
-    flavor: Literal["apple"]
+    flavor: Literal["apple"] = "apple"
 
 
 class PumpkinPie(Pie):
-    flavor: Literal["pumpkin"]
+    flavor: Literal["pumpkin"] = "pumpkin"

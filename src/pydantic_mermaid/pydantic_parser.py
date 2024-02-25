@@ -1,4 +1,5 @@
 """Parse pydantic 2.10 module to mermaid graph"""
+from enum import EnumMeta
 from types import ModuleType, NoneType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
 
@@ -27,6 +28,9 @@ def _get_name(v: Type[Any]) -> str:
 
     origin = get_origin(v)
     if origin is None:
+        if v == Ellipsis:  # type: ignore
+            return "..."
+
         return v.__name__
 
     # In python 3.8 Union has _name attribute
@@ -61,6 +65,17 @@ def _get_dependencies(v: Type[Any], ignore_types: list[Type] = ()) -> Set[str]:
     return ans
 
 
+def get_default_value(field: FieldInfo) -> str:
+    default_value = ""
+    if not field.is_required():
+        if isinstance(field.default, str) and not isinstance(field.annotation, EnumMeta):
+            default_value = f"'{field.default}'"
+        else:
+            default_value = str(field.default)
+
+    return default_value
+
+
 class PydanticParser:
     """parse pydantic module to mermaid graph"""
 
@@ -68,15 +83,13 @@ class PydanticParser:
         graph = MermaidGraph()
 
         for class_name, class_type in module.__dict__.items():
-            if class_name in ["BaseModel"]:
+            if class_name in ["BaseModel", "Enum", "Extra", "Relations"]:
                 continue
 
-            properties: List[Property] = []
-
-            if not isinstance(class_type, ModelMetaclass):
+            if type(class_type) not in [ModelMetaclass, EnumMeta]:
                 continue
 
-            model_type: Type[BaseModel] = class_type  # type: ignore
+            model_type: Type[BaseModel] = class_type
             # inheritance
             parents = model_type.mro()
             first_parent = parents[1]
@@ -88,22 +101,32 @@ class PydanticParser:
                 graph.parent_children[parent_name].add(class_name)
 
             # fields
-            fields: Dict[str, FieldInfo] = model_type.model_fields
-            graph.service_clients[class_name] = set()
-            for field_name, field in fields.items():
-                if field.annotation is None:  # pragma: no cover
-                    continue
+            annotation = ""
+            properties: List[Property] = []
+            if isinstance(class_type, ModelMetaclass):
+                fields: Dict[str, FieldInfo] = model_type.model_fields
+                graph.service_clients[class_name] = set()
+                for name, field in fields.items():
+                    if field.annotation is None:  # pragma: no cover
+                        continue
 
-                field_type_name = _get_name(field.annotation)
+                    properties.append(
+                        Property(name=name, type=_get_name(field.annotation), default_value=get_default_value(field))
+                    )
+                    # dependencies
+                    graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
+                        field.annotation
+                    )
 
-                properties.append(Property(name=field_name, type=field_type_name))
-                # dependencies
-                graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
-                    field.annotation, ignore_types
-                )
+                graph.service_clients[class_name] = graph.service_clients[class_name]
+            elif isinstance(class_type, EnumMeta):
+                annotation = "Enumeration"
+                for name, member in class_type._member_map_.items():
+                    field_type = type(member.value).__name__
+                    value = f"'{member.value}'" if isinstance(member.value, str) else str(member.value)
+                    properties.append(Property(name=name, type=field_type, default_value=value))
 
-            graph.service_clients[class_name] = graph.service_clients[class_name]
-            graph.class_dict[class_name] = MermaidClass(name=class_name, properties=properties)
+            graph.class_dict[class_name] = MermaidClass(name=class_name, properties=properties, annotation=annotation)
             graph.class_names.append(class_name)
 
         return graph
