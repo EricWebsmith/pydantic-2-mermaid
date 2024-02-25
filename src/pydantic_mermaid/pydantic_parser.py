@@ -1,6 +1,8 @@
 """Parse pydantic 2.10 module to mermaid graph"""
+from __future__ import annotations
+
 from enum import EnumMeta
-from types import ModuleType, NoneType
+from types import ModuleType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
 
 from pydantic import BaseModel
@@ -13,6 +15,7 @@ from pydantic.fields import FieldInfo
 
 from pydantic_mermaid.models import MermaidClass, MermaidGraph, Property
 
+NoneType = type(None)  # There is no NoneType in python 3.8
 base_types = [str, int, float, bool]
 
 
