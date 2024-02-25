@@ -59,7 +59,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None and hasattr(v, "__name__") and v != NoneType:
+    if origin is None and hasattr(v, "__name__") and v != NoneType:  # type: ignore
         ans.add(v.__name__)
 
     if origin is not None:
