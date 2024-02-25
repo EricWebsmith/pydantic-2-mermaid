@@ -29,7 +29,7 @@ class Property(BaseModel):
 
     name: str
     type: str
-    default_value: str = ""
+    default_value: str = ""  # str is surrounded by quotes, so empty string "''"
 
     def __str__(self) -> str:
         s = f"{self.name}: {self.type}"

@@ -1,6 +1,4 @@
 """Parse pydantic 2.10 module to mermaid graph"""
-from __future__ import annotations
-
 from enum import EnumMeta
 from types import ModuleType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
@@ -71,7 +69,9 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
 def get_default_value(field: FieldInfo) -> str:
     default_value = ""
-    if not field.is_required():
+    if field.default_factory is not None:
+        default_value = field.default_factory.__name__
+    elif not field.is_required():
         if isinstance(field.default, str) and not isinstance(field.annotation, EnumMeta):
             default_value = f"'{field.default}'"
         else:
