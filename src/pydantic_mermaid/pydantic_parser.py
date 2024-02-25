@@ -4,6 +4,7 @@ from types import ModuleType, NoneType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
 
 from pydantic import BaseModel
+
 # ModelMetaclass is commonly used pydantic related packages, and we need to import it here
 # We use this to determine if a class is a pydantic model
 # I am strongly against making it _internal
@@ -15,7 +16,7 @@ from pydantic_mermaid.models import MermaidClass, MermaidGraph, Property
 base_types = [str, int, float, bool]
 
 
-def _get_name(v: Type[Any]) -> str:
+def _get_name(v: Type[Any]) -> str:  # noqa: PLR0911
     """get name from type"""
     if v in base_types:
         return v.__name__
@@ -40,13 +41,13 @@ def _get_name(v: Type[Any]) -> str:
         origin_name = origin.__name__
     sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
 
-    if hasattr(v,"_name") and getattr(v,"_name") == "Optional" and len(sub_names) == 2 and sub_names[-1] == "NoneType":
+    if hasattr(v, "_name") and v._name == "Optional" and len(sub_names) == 2 and sub_names[-1] == "NoneType":  # noqa: PLR2004
         return f"Optional[{sub_names[0]}]"
 
     return f"{origin_name}[{', '.join(sub_names)}]"
 
 
-def _get_dependencies(v: Type[Any], ignore_types: list[Type] = ()) -> Set[str]:
+def _get_dependencies(v: Type[Any]) -> Set[str]:
     """get dependencies from property types"""
     ans: Set[str] = set()
 
@@ -55,12 +56,12 @@ def _get_dependencies(v: Type[Any], ignore_types: list[Type] = ()) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None and hasattr(v, "__name__") and v != NoneType and v not in ignore_types:
+    if origin is None and hasattr(v, "__name__") and v != NoneType:
         ans.add(v.__name__)
 
     if origin is not None:
         for sub_v in get_args(v):
-            ans |= _get_dependencies(sub_v, ignore_types)
+            ans |= _get_dependencies(sub_v)
 
     return ans
 
@@ -79,7 +80,7 @@ def get_default_value(field: FieldInfo) -> str:
 class PydanticParser:
     """parse pydantic module to mermaid graph"""
 
-    def __call__(self, module: ModuleType, ignore_types: list[Type] = ()) -> MermaidGraph:
+    def __call__(self, module: ModuleType) -> MermaidGraph:
         graph = MermaidGraph()
 
         for class_name, class_type in module.__dict__.items():

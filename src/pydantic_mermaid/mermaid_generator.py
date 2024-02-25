@@ -1,6 +1,6 @@
 from copy import deepcopy
 from types import ModuleType
-from typing import Set, Type, Dict
+from typing import Dict, List, Set, Tuple
 
 from importlib_resources import files
 from jinja2 import Environment, FileSystemLoader
