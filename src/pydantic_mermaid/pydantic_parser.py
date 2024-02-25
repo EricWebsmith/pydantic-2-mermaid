@@ -1,4 +1,6 @@
 """Parse pydantic 2.10 module to mermaid graph"""
+from __future__ import annotations
+
 from enum import EnumMeta
 from types import ModuleType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
@@ -13,10 +15,11 @@ from pydantic.fields import FieldInfo
 
 from pydantic_mermaid.models import MermaidClass, MermaidGraph, Property
 
+NoneType = type(None)  # There is no NoneType in python 3.8
 base_types = [str, int, float, bool]
 
 
-def _get_name(v: Type[Any]) -> str:
+def _get_name(v: Type[Any]) -> str:  # noqa: PLR0911
     """get name from type"""
     if v in base_types:
         return v.__name__
@@ -40,6 +43,10 @@ def _get_name(v: Type[Any]) -> str:
     elif hasattr(origin, "__name__"):
         origin_name = origin.__name__
     sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
+
+    if hasattr(v, "_name") and v._name == "Optional" and len(sub_names) == 2 and sub_names[-1] == "NoneType":  # noqa: PLR2004
+        return f"Optional[{sub_names[0]}]"
+
     return f"{origin_name}[{', '.join(sub_names)}]"
 
 
@@ -52,7 +59,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None and hasattr(v, "__name__"):
+    if origin is None and hasattr(v, "__name__") and v != NoneType:  # type: ignore
         ans.add(v.__name__)
 
     if origin is not None:
