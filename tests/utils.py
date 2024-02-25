@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from re import Pattern, compile
 from typing import List, Tuple, Union
