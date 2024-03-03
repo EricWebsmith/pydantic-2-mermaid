@@ -14,12 +14,3 @@ class Person(BaseModel):
     friends: List[str] = Field(title="Friends", description="List of friends", default_factory=list)
     city: str
     addr: str = ""
-
-
-class NewPerson(BaseModel):
-    name: str | None = None
-    full_name: str = Field(title="Full Name", description="Full name of the person", default_factory=get_name)
-    age: int | None = None
-    friends: list[str] = Field(title="Friends", description="List of friends", default_factory=list)
-    city: str
-    addr: str = ""
