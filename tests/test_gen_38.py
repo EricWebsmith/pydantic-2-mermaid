@@ -12,7 +12,7 @@ if sys.version_info < (3, 10):
     @pytest.mark.parametrize(
         ("module", "root", "relations", "expected_path"),
         [
-            (show_optional, "", Relations.Dependency, "tests/mock/py38/show_optoinal.md"),
+            (show_optional, "", Relations.Dependency, "tests/mock/py38/show_optional.md"),
         ],
     )
     def test_gen(module: ModuleType, root: str, relations: Relations, expected_path: str) -> None:
