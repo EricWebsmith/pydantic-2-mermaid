@@ -1,4 +1,5 @@
 """Parse pydantic 2.10 module to mermaid graph"""
+
 from enum import EnumMeta
 from types import ModuleType
 from typing import Any, Dict, List, Set, Type, get_args, get_origin
