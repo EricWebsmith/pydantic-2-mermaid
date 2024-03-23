@@ -18,7 +18,7 @@ NoneType = type(None)  # There is no NoneType in python 3.8
 base_types = [str, int, float, bool]
 
 
-def _get_name(v: Type[Any]) -> str:  # noqa: PLR0911
+def _get_name(v: Type[Any]) -> str:
     """get name from type"""
     if v in base_types:
         return v.__name__
@@ -31,10 +31,7 @@ def _get_name(v: Type[Any]) -> str:  # noqa: PLR0911
 
     origin = get_origin(v)
     if origin is None:
-        if v == Ellipsis:  # type: ignore
-            return "..."
-
-        return v.__name__
+        return "..." if v == Ellipsis else v.__name__  # type: ignore[comparison-overlap]
 
     # In python 3.8 Union has _name attribute
     if hasattr(origin, "_name"):
@@ -58,7 +55,7 @@ def _get_dependencies(v: Type[Any]) -> Set[str]:
 
     origin = get_origin(v)
 
-    if origin is None and hasattr(v, "__name__") and v != NoneType:  # type: ignore
+    if origin is None and hasattr(v, "__name__") and v != NoneType:
         ans.add(v.__name__)
 
     if origin is not None:
