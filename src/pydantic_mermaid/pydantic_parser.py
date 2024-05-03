@@ -124,11 +124,7 @@ class PydanticParser:
                         continue
 
                     properties.append(
-                        Property(
-                            name=name,
-                            type=type_normalize(_get_name(field.annotation)),
-                            default_value=get_default_value(field),
-                        )
+                        Property(name=name, type=_get_name(field.annotation), default_value=get_default_value(field))
                     )
                     # dependencies
                     graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
