@@ -2,6 +2,10 @@
 
 This file documents all notable changes to this project.
 
+## [0.7.2] - 2024-05-03
+### Changed
+- Display Unions with vertical bars (|)
+
 ## [0.7.1] - 2024-02-28
 ### Changed
 - Fix ellipsis in type

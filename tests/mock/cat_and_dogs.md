@@ -11,7 +11,7 @@ classDiagram
     }
 
     class Shop {
-        cat_and_dogs: list[Union[Cat, Dog]]
+        cat_and_dogs: list[Cat | Dog]
     }
 
 
