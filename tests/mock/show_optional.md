@@ -2,14 +2,13 @@
 classDiagram
 
     class Person {
-        name: Union[str, NoneType] = None
+        name: str | None = None
         full_name: str = get_name
-        age: Union[int, NoneType] = None
+        age: int | None = None
         friends: list[str] = list
         city: str
         addr: str = ''
     }
-
 
 
 ```

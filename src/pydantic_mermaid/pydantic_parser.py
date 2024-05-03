@@ -18,6 +18,16 @@ NoneType = type(None)  # There is no NoneType in python 3.8
 base_types = [str, int, float, bool]
 
 
+def type_normalize(type_name: str) -> str:
+    if type_name == "NoneType":
+        return "None"
+
+    if type_name == "UnionType":
+        return "Union"
+
+    return type_name
+
+
 def _get_name(v: Type[Any]) -> str:
     """get name from type"""
     if v in base_types:
@@ -31,7 +41,7 @@ def _get_name(v: Type[Any]) -> str:
 
     origin = get_origin(v)
     if origin is None:
-        return "..." if v == Ellipsis else v.__name__  # type: ignore[comparison-overlap]
+        return "..." if v == Ellipsis else type_normalize(v.__name__)  # type: ignore[comparison-overlap]
 
     # In python 3.8 Union has _name attribute
     if hasattr(origin, "_name"):
@@ -40,8 +50,9 @@ def _get_name(v: Type[Any]) -> str:
         origin_name = origin.__name__
     sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
 
-    if hasattr(v, "_name") and v._name == "Optional" and len(sub_names) == 2 and sub_names[-1] == "NoneType":  # noqa: PLR2004
-        return f"Optional[{sub_names[0]}]"
+    origin_name = type_normalize(origin_name)
+    if origin_name == "Union":
+        return " | ".join(sub_names)
 
     return f"{origin_name}[{', '.join(sub_names)}]"
 
@@ -113,7 +124,11 @@ class PydanticParser:
                         continue
 
                     properties.append(
-                        Property(name=name, type=_get_name(field.annotation), default_value=get_default_value(field))
+                        Property(
+                            name=name,
+                            type=type_normalize(_get_name(field.annotation)),
+                            default_value=get_default_value(field),
+                        )
                     )
                     # dependencies
                     graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
