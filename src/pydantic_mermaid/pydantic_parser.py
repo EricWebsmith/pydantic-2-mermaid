@@ -28,6 +28,28 @@ def type_normalize(type_name: str) -> str:
     return type_name
 
 
+def _get_generic_name(v: Type[Any], origin: Type[Any]) -> str:
+    # get generic origin name
+    if hasattr(origin, "_name"):  # In python 3.8 Union has _name attribute
+        origin_name = origin._name
+    elif hasattr(origin, "__name__"):
+        origin_name = origin.__name__
+
+    origin_name = type_normalize(origin_name)
+
+    # Annotated is a special case, we need to get the first argument
+    if origin_name == "Annotated":
+        return _get_name(get_args(v)[0])
+
+    sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
+
+    # Union is another special case, we need to join the sub names with "|"
+    if origin_name == "Union":
+        return " | ".join(sub_names)
+
+    return f"{origin_name}[{', '.join(sub_names)}]"
+
+
 def _get_name(v: Type[Any]) -> str:
     """get name from type"""
     if v in base_types:
@@ -43,18 +65,7 @@ def _get_name(v: Type[Any]) -> str:
     if origin is None:
         return "..." if v == Ellipsis else type_normalize(v.__name__)  # type: ignore[comparison-overlap]
 
-    # In python 3.8 Union has _name attribute
-    if hasattr(origin, "_name"):
-        origin_name = origin._name
-    elif hasattr(origin, "__name__"):
-        origin_name = origin.__name__
-    sub_names = [_get_name(sub_type) for sub_type in get_args(v)]
-
-    origin_name = type_normalize(origin_name)
-    if origin_name == "Union":
-        return " | ".join(sub_names)
-
-    return f"{origin_name}[{', '.join(sub_names)}]"
+    return _get_generic_name(v, origin)
 
 
 def _get_dependencies(v: Type[Any]) -> Set[str]:

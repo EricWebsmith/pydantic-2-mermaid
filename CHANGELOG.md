@@ -2,6 +2,10 @@
 
 This file documents all notable changes to this project.
 
+## [0.7.3] - 2024-05-03
+### Changed
+- Support Annotated
+
 ## [0.7.2] - 2024-05-03
 ### Changed
 - Display Unions with vertical bars (|)
