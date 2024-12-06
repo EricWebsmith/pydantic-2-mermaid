@@ -65,8 +65,17 @@ class MermaidGenerator:
         """Generate inheritance for class chart using the generic relationship method."""
         return self._generate_relationship_map(self.graph.parent_children)
 
-    def generate_chart(self, *, root: str = "", relations: Relations = Relations.Dependency) -> str:
+    def generate_chart(
+        self,
+        *,
+        root: str = "",
+        ignore_classes: set[str] | None = None,
+        relations: Relations = Relations.Dependency,
+    ) -> str:
         """print class chart"""
+        if not ignore_classes:
+            ignore_classes = set()
+            
         self.generate_allow_list(root, relations)
 
         final_classes: List[MermaidClass] = []
@@ -83,7 +92,10 @@ class MermaidGenerator:
                 inherited_properties = {str(p) for p in self.graph.class_dict[parent_class_name].properties}
                 final_class.properties = [p for p in final_class.properties if str(p) not in inherited_properties]
 
-            final_classes.append(final_class)
+            # Only add to final_classes if the class is not in the
+            # ignore_classes set
+            if class_name not in ignore_classes:
+                final_classes.append(final_class)
 
         client_services: Map = []
         if Relations.Dependency & relations:
