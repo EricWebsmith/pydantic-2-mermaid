@@ -2,7 +2,7 @@
 
 from enum import EnumMeta
 from types import ModuleType
-from typing import Any, Dict, List, Set, Type, get_args, get_origin
+from typing import Any, Dict, ForwardRef, List, Set, Type, get_args, get_origin
 
 from pydantic import BaseModel
 
@@ -63,7 +63,12 @@ def _get_name(v: Type[Any]) -> str:
 
     origin = get_origin(v)
     if origin is None:
-        return "..." if v == Ellipsis else type_normalize(v.__name__)  # type: ignore[comparison-overlap]
+        if v == Ellipsis:
+            return "..."
+        elif isinstance(v, ForwardRef):
+            return type_normalize(v.__forward_arg__)  # type: ignore[comparison-overlap]
+        else:
+            return type_normalize(v.__name__)  # type: ignore[comparison-overlap]
 
     return _get_generic_name(v, origin)
 
@@ -137,7 +142,7 @@ class PydanticParser:
                     properties.append(
                         Property(name=name, type=_get_name(field.annotation), default_value=get_default_value(field))
                     )
-                    # dependencies
+                    # dependencies TODO this does not work for forward references
                     graph.service_clients[class_name] = graph.service_clients[class_name] | _get_dependencies(
                         field.annotation
                     )
