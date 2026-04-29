@@ -2,6 +2,12 @@
 
 This file documents all notable changes to this project.
 
+## [0.7.4] - In Progress
+
+### Changed
+- Fixed `KeyError` when a dependency is outside of module and `root` is set. Fixed #14. PR #16 by 
+  [@smarie](https://github.com/smarie)
+
 ## [0.7.3] - 2024-05-03
 ### Changed
 - Support Annotated
